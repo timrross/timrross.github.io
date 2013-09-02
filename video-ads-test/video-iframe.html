@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>video-iframe</title>
+<script type="text/javascript" src="js/SmpHtml5Ads.js"></script>
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+body {
+    margin: 0;
+    padding: 0;
+}
+.buttons {
+    position: absolute;
+    z-index: 10;
+    left: 10px;
+    top: 10px;
+}
+.buttons .control-button {
+    width: 60px;
+    height: 30px;
+}
+</style>
+</head>
+<body>
+<div id="videoContainer">
+    <video id="content" src="http://www.w3schools.com/tags/mov_bbb.mp4" width="640" height="360" controls="controls"></video>
+</div>
+<script type="text/javascript">
+/**
+ * Augments a video element to provide the correct API for the plugin.
+ */
+function createPlayerInterface(videoElement) {
+     
+    videoElement.container = videoElement.parentNode;
+    
+    videoElement.playlist = {
+        hasAds : true
+    };
+    videoElement.settings = {
+        width : 640,
+        height : 360
+    };
+    
+    videoElement.buttons = document.createElement('div');
+    videoElement.buttons.className = 'buttons';
+
+    videoElement.playButton = document.createElement('button');
+    videoElement.playButton.id = 'play';
+    videoElement.playButton.className = 'control-button';
+    videoElement.playButton.innerHTML = 'play';
+    videoElement.buttons.appendChild(videoElement.playButton);
+
+    videoElement.pauseButton = document.createElement('button');
+    videoElement.pauseButton.id = 'pause';
+    videoElement.pauseButton.className = 'control-button';
+    videoElement.pauseButton.innerHTML = 'pause';
+    videoElement.buttons.appendChild(videoElement.pauseButton);
+
+    videoElement.container.appendChild(videoElement.buttons);
+
+    videoElement.playButton.addEventListener('click', function(e) {
+        console.log('play');
+        videoElement.play();
+    });
+    videoElement.pauseButton.onclick = function (e) {
+        console.log('pause');
+        videoElement.pause();
+    };
+    
+    /* stub a method */
+    videoElement.updateUiConfig = function () {};
+    
+    return videoElement;
+}
+var videoElement = document.getElementById('content')
+var playerInterface = createPlayerInterface(videoElement);
+console.log(playerInterface);
+/* Set up the utils object for the plugin */
+var utils = {
+    loadCSS: function () {
+        console.log('loadCSS');
+    },
+    playerInterface : playerInterface
+};
+
+
+var data = {
+    'playerDomId': 'content',
+    'prerollAdTag': 'http://pubads.g.doubleclick.net/gampad/ads?sz=512x288&iu=/4817/Test_BBCNewsAppiPad&ciu_szs=300x60,300x250&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&m_ast=vast&url=[referrer_url]&correlator=[timestamp]',
+    'debug': true
+};
+
+var plugin = new SmpHtml5Ads(utils, data);
+plugin.pluginInitialisation(utils);
+</script>
+</body>
+</html>
